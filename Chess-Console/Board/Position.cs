@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Board
+namespace board
 {
     class Position
     {
