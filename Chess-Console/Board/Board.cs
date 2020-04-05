@@ -8,12 +8,16 @@ namespace board
     {
         public int Lines { get; set; }
         public int Columns { get; set; }
-        public Piece[,] pieces { get; private set; }
+        private Piece[,] pieces;
         public Board(int lines, int columns)
         {
             Lines = lines;
             Columns = columns;
             pieces = new Piece[lines, columns];
+        }
+        public Piece GetPiece(int line, int column)
+        {
+            return pieces[line, column];
         }
     }
 }
