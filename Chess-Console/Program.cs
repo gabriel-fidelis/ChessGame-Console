@@ -11,9 +11,8 @@ namespace Chess_Console
             try
             {
                 Board board = new Board(8, 8);
-                board.PutPiece(new Rook(Color.Black, board), new Position(0, 0));
-                board.PutPiece(new Rook(Color.Black, board), new Position(0, 0));
-                board.PutPiece(new King(Color.Black, board), new Position(2, 4));
+                board.PutPiece(new Rook(Color.Yellow, board), new ChessPosition('a', 8).ToPosition());
+                board.PutPiece(new King(Color.Yellow, board), new ChessPosition('a', 5).ToPosition());
                 Screen.PrintBoard(board);
             }
             catch (BoardException e)
