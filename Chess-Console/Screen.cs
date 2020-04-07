@@ -10,7 +10,7 @@ namespace board
                 Console.Write(8 - i +" ");
                 for (int j = 0; j < board.Columns; j++)
                 {
-                    if (board.GetPiece(i, j) == null)
+                    if (board.GetPiece(new Position(i, j)) == null)
                     {
                         Console.Write("- ");
                     }
@@ -28,12 +28,15 @@ namespace board
         {
             if (piece.Color == Color.White)
             {
+                ConsoleColor aux = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.Write(piece);
+                Console.ForegroundColor = aux;
             }
             else
             {
                 ConsoleColor aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write(piece);
                 Console.ForegroundColor = aux;
             }

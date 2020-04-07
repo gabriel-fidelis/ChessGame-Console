@@ -15,5 +15,9 @@ namespace board
             Board = board;
             Movements = 0;
         }
+        public void MovementIncrease() //method to increase how many movements the piece has made.
+        {
+            Movements++;
+        }
     }
 }

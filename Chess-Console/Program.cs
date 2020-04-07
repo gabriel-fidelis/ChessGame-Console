@@ -2,6 +2,7 @@
 using board;
 using chess;
 using board.exceptions;
+using System.Collections.Generic;
 namespace Chess_Console
 {
     class Program
@@ -10,10 +11,9 @@ namespace Chess_Console
         {
             try
             {
-                Board board = new Board(8, 8);
-                board.PutPiece(new Rook(Color.Yellow, board), new ChessPosition('a', 8).ToPosition());
-                board.PutPiece(new King(Color.Yellow, board), new ChessPosition('a', 5).ToPosition());
-                Screen.PrintBoard(board);
+                ChessMatch match = new ChessMatch();
+                match.MovementExecution(new ChessPosition('c', 1).ToPosition(), new ChessPosition('c', 4).ToPosition());
+                Screen.PrintBoard(match.Board);
             }
             catch (BoardException e)
             {
