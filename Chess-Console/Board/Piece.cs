@@ -1,7 +1,7 @@
 ﻿using System;
 namespace board
 {
-    class Piece
+    abstract class Piece
     {
         public Position Position { get; set; }
         public Color Color { get; protected set; }
@@ -19,5 +19,6 @@ namespace board
         {
             Movements++;
         }
+        public abstract bool[,] PossibleMovements();
     }
 }

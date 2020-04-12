@@ -2,7 +2,6 @@
 using board;
 using chess;
 using board.exceptions;
-using System.Collections.Generic;
 namespace Chess_Console
 {
     class Program
@@ -12,8 +11,19 @@ namespace Chess_Console
             try
             {
                 ChessMatch match = new ChessMatch();
-                match.MovementExecution(new ChessPosition('c', 1).ToPosition(), new ChessPosition('c', 4).ToPosition());
-                Screen.PrintBoard(match.Board);
+                while (match.isOver != true)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.Board);
+                    Console.Write("\nEnter starting position: ");
+                    Position initial = Screen.ReadChessPosition().ToPosition();
+                    Console.Clear();
+                    bool[,] possibleMovements = match.Board.GetPiece(initial).PossibleMovements();
+                    Screen.PrintBoard(match.Board, possibleMovements);
+                    Console.Write("\nEnter target position: ");
+                    Position final = Screen.ReadChessPosition().ToPosition();
+                    match.MovementExecution(initial, final);
+                }
             }
             catch (BoardException e)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using board.exceptions;
+using board;
 namespace board
 {
     class Board
@@ -44,17 +45,16 @@ namespace board
                 pieces[pos.Line, pos.Column] = null;
                 return aux;
             }
-
         }
-        private bool IsValidPosition(Position pos)
+        public bool IsValidPosition(Position pos)
         {
-            if (pos.Line < 0 || pos.Line > Lines || pos.Column < 0 || pos.Column > Columns)
+            if (pos.Line < 0 || pos.Line >= Lines || pos.Column < 0 || pos.Column >= Columns)
             {
                 return false;
             }
             return true;
         }
-        private void CheckPosition(Position pos)
+        public void CheckPosition(Position pos)
         {
             if (!IsValidPosition(pos))
             {
