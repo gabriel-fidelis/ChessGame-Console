@@ -18,7 +18,7 @@ namespace Chess_Console
             }
             Console.WriteLine("  A B C D E F G H");
         }
-        public static void PrintBoard(Board board, bool[,] possibleMovements)
+        public static void PrintBoard(Board board, bool[,] possibleMovements) //method overload to show possible movements of a piece on-screen
         {
             ConsoleColor OriginalColor = Console.BackgroundColor;
             ConsoleColor PossibleMovementsColor = ConsoleColor.DarkGray;
