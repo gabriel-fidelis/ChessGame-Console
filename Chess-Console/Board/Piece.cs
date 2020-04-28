@@ -36,8 +36,10 @@ namespace board
         }
         public bool CanMoveTo(Position pos)
         {
-            return PossibleMovements()[pos.Line, pos.Column];
+            bool[,] mat;
+            mat = PossibleMovements();
+            return mat[pos.Line, pos.Column];
         }
         public abstract bool[,] PossibleMovements();
     }
-}
+}   

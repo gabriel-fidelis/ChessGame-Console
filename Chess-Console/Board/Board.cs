@@ -16,6 +16,7 @@ namespace board
         }
         public Piece GetPiece(Position pos) //Returns an object 'Piece' from the board matrix.
         {
+            CheckPosition(pos);
             return pieces[pos.Line, pos.Column];
         }
         private bool ExistsPiece(Position pos) //Control method to check if there's a piece in given position.

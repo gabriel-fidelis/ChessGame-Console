@@ -10,25 +10,14 @@ namespace Chess_Console
         static void Main(string[] args)
         {
             ChessMatch match = new ChessMatch();
-            while (match.isOver != true)
+            while (match.IsOver != true)
             {
                 try
                 {
                     Console.Clear();
                     Screen.PrintBoard(match.Board);
                     Console.WriteLine();
-                    Console.WriteLine("Turn: " + match.turn);
-                    Console.WriteLine("Waiting movements from " + match.currentPlayer);
-                    Console.Write("\nEnter starting position: ");
-                    Position initial = Screen.ReadChessPosition().ToPosition();
-                    match.CheckStartingPosition(initial);
-                    Console.Clear();
-                    bool[,] possibleMovements = match.Board.GetPiece(initial).PossibleMovements();
-                    Screen.PrintBoard(match.Board, possibleMovements);
-                    Console.Write("\nEnter target position: ");
-                    Position final = Screen.ReadChessPosition().ToPosition();
-                    match.CheckFinalPosition(initial, final);
-                    match.TurnExecution(initial, final);
+                    Screen.PrintMatch(match);
                 }
                 catch (BoardException e)
                 {
