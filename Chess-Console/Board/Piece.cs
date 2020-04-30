@@ -19,6 +19,10 @@ namespace board
         {
             Movements++;
         }
+        public void MovementDecrease()
+        {
+            Movements--;
+        }
         public bool HasPossibleMovements()
         {
             bool[,] possibleMovements = PossibleMovements();

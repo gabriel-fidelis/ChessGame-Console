@@ -84,7 +84,7 @@ namespace Chess_Console
             PrintSet(match.GetCapturedPieces(Color.White));
             Console.Write("Black: ");
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            PrintSet(match.GetCapturedPieces(Color.Black));
+            PrintSet(match.GetCapturedPieces(Color.Black    ));
         }
         private static void PrintSet(HashSet<Piece> set)
         {
@@ -97,22 +97,49 @@ namespace Chess_Console
             Console.ResetColor();
             Console.WriteLine();
         }
-        public static void PrintMatch(ChessMatch match)
+        public static void PrintMatch(ChessMatch match) 
         {
             Console.WriteLine("Turn: " + match.Turn);
             Console.WriteLine();
             PrintCapturedPieces(match);
-            Console.WriteLine("Waiting movements from " + match.CurrentPlayer);
-            Console.Write("\nEnter starting position: ");
-            Position initial = ReadChessPosition().ToPosition();
-            match.CheckStartingPosition(initial);
-            Console.Clear();
-            bool[,] possibleMovements = match.Board.GetPiece(initial).PossibleMovements();
-            PrintBoard(match.Board, possibleMovements); //Printing board with possible movements of a currently moving piece.
-            Console.Write("\nEnter target position: ");
-            Position final = ReadChessPosition().ToPosition();
-            match.CheckFinalPosition(initial, final);
-            match.TurnExecution(initial, final);
+            if (match.IsOver)
+            {
+                Console.WriteLine("Check-Mate!");
+                Color winnerColor = match.CurrentPlayer;
+                if (winnerColor == Color.White)
+                {
+                    Console.Write("Winner: ");
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.WriteLine("White!");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.Write("Winner: ");
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("White!");
+                    Console.ResetColor();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Waiting movements from " + match.CurrentPlayer);
+                if (match.Check)
+                {
+                    Console.WriteLine("Attention, your king is in check!");
+                }
+                Console.Write("\nEnter starting position: ");
+                Position initial = ReadChessPosition().ToPosition();
+                match.CheckStartingPosition(initial);
+                Console.Clear();
+                bool[,] possibleMovements = match.Board.GetPiece(initial).PossibleMovements();
+                PrintBoard(match.Board, possibleMovements); //Printing board with possible movements of a currently moving piece.
+                Console.Write("\nEnter target position: ");
+                Position final = ReadChessPosition().ToPosition();
+                match.CheckFinalPosition(initial, final);
+                match.TurnExecution(initial, final);
+            }
+
         }
     }
 }

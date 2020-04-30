@@ -12,7 +12,7 @@ namespace chess
         }
         public Position ToPosition() //Method to transform chess position, e.g. "e6", to a matrix position.
         {
-            return new Position(8 - Line, Column - 'a');
+            return new Position(8 - Line, Column - 'a'); //I used ASCII code subtraction here
         }
         public override string ToString() //Override ToString method to print chess position.
         {
