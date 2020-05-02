@@ -1,4 +1,4 @@
-﻿/* Chess Match Boardgame WIP - Made in Console
+﻿/* Chess Match Boardgame WIP - Made in .NET Core
  * This project is a proof of my knowledge in object orientation and also a good start in the creation of my portfolio.
  * I've put a lot of work in it and it shouldn't be too hard to read because I've commented the code in the important methods.
  * I'll give an brief explanation of the code here too.

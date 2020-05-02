@@ -71,8 +71,8 @@ namespace Chess_Console
         }
         public static ChessPosition ReadChessPosition()
         {
-            string position = Console.ReadLine();
-            if (position.Length == 1)
+            string position = Console.ReadLine().ToLower();
+            if (position.Length < 2)
             {
                 throw new FormatException();
             }
