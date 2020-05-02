@@ -1,21 +1,22 @@
 ﻿using System;
 using board;
+
 namespace chess
 {
-    class Rook : Piece
+    class Bishop : Piece
     {
-        public Rook(Color color, Board board) : base(color, board)
+        public Bishop(Color color, Board board) : base(color, board)
         {
 
         }
         public override string ToString()
         {
-            return "R";
+            return "B";
         }
         private bool CanMove(Position pos)
         {
             Piece p = Board.GetPiece(pos);
-            return p == null || p.Color != this.Color; //returns true if either the square is empty or there's an enemy piece.
+            return p == null || p.Color != this.Color;
         }
         private bool HasEnemy(Position pos)
         {
@@ -25,8 +26,8 @@ namespace chess
         {
             bool[,] mat = new bool[Board.Lines, Board.Columns];
             Position pos;
-            //above
-            pos = new Position(Position.Line - 1, Position.Column);
+            //northwest
+            pos = new Position(Position.Line - 1, Position.Column - 1);
             while (Board.IsValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -35,9 +36,22 @@ namespace chess
                     break;
                 }
                 pos.Line--;
+                pos.Column--;
             }
-            //below
-            pos = new Position(Position.Line + 1, Position.Column);
+            //northeast
+            pos = new Position(Position.Line - 1, Position.Column + 1);
+            while (Board.IsValidPosition(pos) && CanMove(pos))
+            {
+                mat[pos.Line, pos.Column] = true;
+                if (HasEnemy(pos))
+                {
+                    break;
+                }
+                pos.Line--;
+                pos.Column++;
+            }
+            //southwest
+            pos = new Position(Position.Line + 1, Position.Column - 1);
             while (Board.IsValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -46,20 +60,10 @@ namespace chess
                     break;
                 }
                 pos.Line++;
-            }
-            //left 
-            pos = new Position(Position.Line, Position.Column - 1);
-            while (Board.IsValidPosition(pos) && CanMove(pos))
-            {
-                mat[pos.Line, pos.Column] = true;
-                if (HasEnemy(pos))
-                {
-                    break;
-                }
                 pos.Column--;
             }
-            //right
-            pos = new Position(Position.Line, Position.Column + 1);
+            //southeast
+            pos = new Position(Position.Line + 1, Position.Column + 1);
             while (Board.IsValidPosition(pos) && CanMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -67,10 +71,10 @@ namespace chess
                 {
                     break;
                 }
+                pos.Line++;
                 pos.Column++;
             }
             return mat;
         }
     }
 }
-

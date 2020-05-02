@@ -41,6 +41,11 @@ namespace Chess_Console
                     Console.WriteLine(e.Message);
                     Console.ReadLine();
                 }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Incorrect Position.");
+                    Console.ReadLine();
+                }
             }
             Console.Clear();
             Screen.PrintBoard(match.Board);

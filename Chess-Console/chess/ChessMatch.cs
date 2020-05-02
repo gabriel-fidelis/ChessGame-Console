@@ -90,10 +90,6 @@ namespace chess
         */
         public bool CheckMateTest(Color color)
         {
-            if (!KingIsInCheck(color))
-            {
-                return false;
-            }
             foreach (Piece piece in GetPlayingPieces(color))
             {
                 bool[,] possibleMovements = piece.PossibleMovements();
@@ -139,6 +135,7 @@ namespace chess
             {
                 Board.PutPiece(capturedPiece, final);
                 capturedPieces.Remove(capturedPiece);
+                playingPieces.Add(capturedPiece);
             }
             Board.PutPiece(p, initial);
         }
@@ -149,6 +146,14 @@ namespace chess
             {
                 UndoMovement(initial, final, capturedPiece);
                 throw new ChessException("You cannot make a move that will result in you being in check.");
+            }
+            Piece possiblePawn = Board.GetPiece(final); //Checks if the piece moving is a pawn for possible promotion.
+            if (possiblePawn is Pawn)
+            {
+                if (((possiblePawn.Color == Color.White && final.Line == 0) || (possiblePawn.Color == Color.Black && final.Line == 7)))
+                {
+                    playingPieces.Add(PromotePawn(possiblePawn, initial, final, capturedPiece)); //promotes pawn in the final position
+                }
             }
             if (KingIsInCheck(GetOpponentColor(CurrentPlayer)))
             {
@@ -166,6 +171,51 @@ namespace chess
             {
                 Turn++;
                 ChangePlayer();
+            }
+        }
+        private Piece PromotePawn(Piece p, Position initial, Position final, Piece capturedPiece) //Pawn Promotion method
+        {
+            p = Board.RemovePiece(final);
+            playingPieces.Remove(p);
+            Console.WriteLine();
+            Console.WriteLine("Your pawn has been promoted! choose your piece (Bishop/Queen/Knight/Rook)");
+            Console.Write("Desired piece: ");
+            string desiredPiece = Console.ReadLine().ToLower();
+            if (desiredPiece == "bishop")
+            {
+                Bishop bishop = new Bishop(CurrentPlayer, Board);
+                Board.PutPiece(bishop, final);
+                return bishop;
+            }
+            else if (desiredPiece == "queen")
+            {
+                Queen queen = new Queen(CurrentPlayer, Board);
+                Board.PutPiece(queen, final);
+                return queen;
+            }
+            else if (desiredPiece == "knight")
+            {
+                Knight knight = new Knight(CurrentPlayer, Board);
+                Board.PutPiece(knight, final);
+                playingPieces.Add(Board.GetPiece(final));
+                return knight;
+            }
+            else if (desiredPiece == "rook")
+            {
+                Rook rook = new Rook(CurrentPlayer, Board);
+                Board.PutPiece(rook, final);
+                playingPieces.Add(Board.GetPiece(final));
+                return rook;
+            }
+            else
+            {
+                Board.PutPiece(p, initial);
+                if (capturedPiece != null)
+                {
+                    Board.PutPiece(capturedPiece, final);
+                    capturedPieces.Remove(capturedPiece);
+                }
+                throw new ChessException("Chosen piece is incorrect. (You need to choose between Bishop, Queen, Rook or Knight.");
             }
         }
         private void ChangePlayer() //Method to change current player
@@ -210,12 +260,37 @@ namespace chess
         private void PutPieces()
         {
             //white
-            PutNewPiece('c', 1, new Rook(Color.White, Board));
-            PutNewPiece('d', 1, new King(Color.White, Board));
-            PutNewPiece('h', 7, new Rook(Color.White, Board));
+            PutNewPiece('a', 1, new Rook(Color.White, Board));
+            PutNewPiece('h', 1, new Rook(Color.White, Board));
+            PutNewPiece('e', 1, new King(Color.White, Board));
+            PutNewPiece('c', 1, new Bishop(Color.White, Board));
+            PutNewPiece('f', 1, new Bishop(Color.White, Board));
+            PutNewPiece('d', 1, new Queen(Color.White, Board));
+            PutNewPiece('b', 1, new Knight(Color.White, Board));
+            PutNewPiece('g', 1, new Knight(Color.White, Board));
+            int code = 97; //ascii code of 'a', to create pawns.
+            for (int i = 0; i < Board.Lines; i++)
+            {
+                char pawns = (char) code;
+                PutNewPiece(pawns, 2, new Pawn(Color.White, Board));
+                code++;
+            }
             //black
-            PutNewPiece('a', 8, new King(Color.Black, Board));
-            PutNewPiece('b', 8, new Rook(Color.Black, Board));
+            PutNewPiece('a', 8, new Rook(Color.Black, Board));
+            PutNewPiece('h', 8, new Rook(Color.Black, Board));
+            PutNewPiece('e', 8, new King(Color.Black, Board));
+            PutNewPiece('c', 8, new Bishop(Color.Black, Board));
+            PutNewPiece('f', 8, new Bishop(Color.Black, Board));
+            PutNewPiece('d', 8, new Queen(Color.Black, Board));
+            PutNewPiece('b', 8, new Knight(Color.Black, Board));
+            PutNewPiece('g', 8, new Knight(Color.Black, Board));
+            code = 97;
+            for (int i = 0; i < Board.Lines; i++)
+            {
+                char pawns = (char)code;
+                PutNewPiece(pawns, 7, new Pawn(Color.Black, Board));
+                code++;
+            }
         }
     }
 }

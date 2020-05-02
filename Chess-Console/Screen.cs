@@ -72,6 +72,10 @@ namespace Chess_Console
         public static ChessPosition ReadChessPosition()
         {
             string position = Console.ReadLine();
+            if (position.Length == 1)
+            {
+                throw new FormatException();
+            }
             char column = position[0];
             int line = int.Parse(position[1].ToString());
             return new ChessPosition(column, line);
