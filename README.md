@@ -1,7 +1,7 @@
 ## .NET Core - Console Chess Game
 This is my first big project using object orientation programming. I created it using C# with .NET Core.
 I have learnt a lot while doing this project and it is my first step on the creation of my portfolio.
-It is a basic chess game, that you can with a friend locally. 
+It is a basic chess game, that you can play with a friend locally. 
 It uses the standard chess-positioning system to receive commands, so when moving your pieces, you should give a command like **c2** or **D4**.
 
 Because this project is made on .NET Core, you **must** have it installed to properly work. 

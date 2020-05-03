@@ -262,7 +262,7 @@ namespace chess
             //white
             PutNewPiece('a', 1, new Rook(Color.White, Board));
             PutNewPiece('h', 1, new Rook(Color.White, Board));
-            PutNewPiece('e', 1, new King(Color.White, Board));
+            PutNewPiece('e', 1, new King(Color.White, Board, this));
             PutNewPiece('c', 1, new Bishop(Color.White, Board));
             PutNewPiece('f', 1, new Bishop(Color.White, Board));
             PutNewPiece('d', 1, new Queen(Color.White, Board));
@@ -278,7 +278,7 @@ namespace chess
             //black
             PutNewPiece('a', 8, new Rook(Color.Black, Board));
             PutNewPiece('h', 8, new Rook(Color.Black, Board));
-            PutNewPiece('e', 8, new King(Color.Black, Board));
+            PutNewPiece('e', 8, new King(Color.Black, Board, this));
             PutNewPiece('c', 8, new Bishop(Color.Black, Board));
             PutNewPiece('f', 8, new Bishop(Color.Black, Board));
             PutNewPiece('d', 8, new Queen(Color.Black, Board));
