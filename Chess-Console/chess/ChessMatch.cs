@@ -125,6 +125,23 @@ namespace chess
                 capturedPieces.Add(capturedPiece); // if a piece was captured during the movement, add it to the set
                 playingPieces.Remove(capturedPiece); // and remove it from the playing pieces.
             }
+            //Special-move Castling
+            if (p is King && final.Column == initial.Column + 2) //Basic Castling
+            {
+                Position rookInitialPosition = new Position(initial.Line, initial.Column +3);
+                Position rookFinalPosition = new Position(initial.Line, initial.Column + 1);
+                Piece rook = Board.RemovePiece(rookInitialPosition);
+                rook.MovementIncrease();
+                Board.PutPiece(rook, rookFinalPosition);
+            }
+            if (p is King && final.Column == initial.Column - 2) //Three-Squares Castling
+            {
+                Position rookInitialPosition = new Position(initial.Line, initial.Column - 4);
+                Position rookFinalPosition = new Position(initial.Line, initial.Column - 1);
+                Piece rook = Board.RemovePiece(rookInitialPosition);
+                rook.MovementIncrease();
+                Board.PutPiece(rook, rookFinalPosition);
+            }
             return capturedPiece;
         }
         private void UndoMovement(Position initial, Position final, Piece capturedPiece)
@@ -138,6 +155,24 @@ namespace chess
                 playingPieces.Add(capturedPiece);
             }
             Board.PutPiece(p, initial);
+            //Special-move Castling
+
+            if (p is King && final.Column == initial.Column + 2) //Basic Castling
+            {
+                Position rookInitialPosition = new Position(initial.Line, initial.Column + 3);
+                Position rookFinalPosition = new Position(initial.Line, initial.Column + 1);
+                Piece rook = Board.RemovePiece(rookFinalPosition);
+                rook.MovementDecrease();
+                Board.PutPiece(rook, rookInitialPosition);
+            }
+            if (p is King && final.Column == initial.Column - 2) //Three-Squares Castling
+            {
+                Position rookInitialPosition = new Position(initial.Line, initial.Column - 4);
+                Position rookFinalPosition = new Position(initial.Line, initial.Column - 1);
+                Piece rook = Board.RemovePiece(rookFinalPosition);
+                rook.MovementDecrease();
+                Board.PutPiece(rook, rookInitialPosition);
+            }
         }
         public void TurnExecution(Position initial, Position final)
         {
