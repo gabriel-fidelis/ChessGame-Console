@@ -12,6 +12,8 @@ namespace chess
         public Color CurrentPlayer { get; private set; }
         public bool IsOver { get; private set; }
         public bool Check { get; private set; }
+        internal Pawn enPassantPawn;
+        internal Color enPassantPlayerColor;
         private HashSet<Piece> playingPieces;
         private HashSet<Piece> capturedPieces;
         public ChessMatch()
@@ -24,6 +26,7 @@ namespace chess
             PutPieces();
             IsOver = false;
             Check = false;
+            enPassantPawn = null;
         }
         public HashSet<Piece> GetCapturedPieces(Color color) //get color-specific captured pieces.
         {
@@ -120,6 +123,44 @@ namespace chess
             p.MovementIncrease();
             Piece capturedPiece = Board.RemovePiece(final); //This line captures a piece if there is one in the final movement position of another piece.
             Board.PutPiece(p, final);
+            //Special-move En-Passant
+            if (p is Pawn) //Controls en-passant condition and movement
+            {
+                if (capturedPiece == null && enPassantPawn != null)
+                {
+                    if (enPassantPawn.Color != CurrentPlayer)
+                    {
+                        if (CurrentPlayer == Color.White && Board.GetPiece(new Position(final.Line + 1, final.Column)) is Pawn)
+                        {
+                            capturedPiece = Board.RemovePiece(new Position(final.Line + 1, final.Column));
+                            enPassantPawn = null;
+                        }
+                        else if (CurrentPlayer == Color.Black && Board.GetPiece(new Position(final.Line - 1, final.Column)) is Pawn)
+                        {
+                            capturedPiece = Board.RemovePiece(new Position(final.Line - 1, final.Column));
+                            enPassantPawn = null;
+                        }
+                    }
+                }
+                if (p.Color == Color.White && final.Line == initial.Line - 2)
+                {
+                    Pawn enPassantPawn = (p as Pawn);
+                    enPassantPawn.EnPassantVulnerable = true;
+                    this.enPassantPawn = enPassantPawn;
+                    enPassantPlayerColor = CurrentPlayer;
+                }
+                else if (p.Color == Color.Black && final.Line == initial.Line + 2)
+                {
+                    Pawn enPassantPawn = (p as Pawn);
+                    enPassantPawn.EnPassantVulnerable = true;
+                    this.enPassantPawn = enPassantPawn;
+                    enPassantPlayerColor = CurrentPlayer;
+                }
+            }
+            if (CurrentPlayer != enPassantPlayerColor) 
+            {
+                enPassantPawn = null;
+            }
             if (capturedPiece != null)
             {
                 capturedPieces.Add(capturedPiece); // if a piece was captured during the movement, add it to the set
@@ -173,6 +214,7 @@ namespace chess
                 rook.MovementDecrease();
                 Board.PutPiece(rook, rookInitialPosition);
             }
+
         }
         public void TurnExecution(Position initial, Position final)
         {
@@ -307,7 +349,7 @@ namespace chess
             for (int i = 0; i < Board.Lines; i++)
             {
                 char pawns = (char) code;
-                PutNewPiece(pawns, 2, new Pawn(Color.White, Board));
+                PutNewPiece(pawns, 2, new Pawn(Color.White, Board, this));
                 code++;
             }
             //black
@@ -323,7 +365,7 @@ namespace chess
             for (int i = 0; i < Board.Lines; i++)
             {
                 char pawns = (char)code;
-                PutNewPiece(pawns, 7, new Pawn(Color.Black, Board));
+                PutNewPiece(pawns, 7, new Pawn(Color.Black, Board, this));
                 code++;
             }
         }

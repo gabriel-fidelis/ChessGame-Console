@@ -11,6 +11,6 @@ Also, because this is my first project, and I'm still learning, I will update it
 ### To-do list:
 * ~~Pawn promotion~~
 * Improve command input
-* Castling special move
-* En-passant special move
+* ~~Castling special move~~
+* ~~En-passant special move~~
 * More optimized check-mate logic

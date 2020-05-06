@@ -5,9 +5,12 @@ namespace chess
 {
     class Pawn : Piece
     {
-        public Pawn(Color color, Board board) : base(color, board)
+        public bool EnPassantVulnerable { get; set; }
+        private ChessMatch match; 
+        public Pawn(Color color, Board board, ChessMatch match) : base(color, board)
         {
-
+            EnPassantVulnerable = false;
+            this.match = match;
         }
         public override string ToString()
         {
@@ -49,6 +52,30 @@ namespace chess
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+                //Special-move En-Passant 
+
+                pos = new Position(Position.Line, Position.Column - 1); //Left
+                if (match.enPassantPawn != null)
+                {
+                    if (Board.IsValidPosition(pos) && match.enPassantPawn.Color != this.Color && match.enPassantPawn.Position.Line == pos.Line && match.enPassantPawn.Position.Column == pos.Column)
+                    {
+                        if (Board.GetPiece(new Position(pos.Line - 1, pos.Column)) == null)
+                        {
+                            mat[pos.Line - 1, pos.Column] = true;
+                        }
+                    }
+                }
+                pos = new Position(Position.Line, Position.Column + 1); //Right
+                if (match.enPassantPawn != null)
+                {
+                    if (Board.IsValidPosition(pos) && match.enPassantPawn.Color != this.Color && match.enPassantPawn.Position.Line == pos.Line && match.enPassantPawn.Position.Column == pos.Column)
+                    {
+                        if (Board.GetPiece(new Position(pos.Line - 1, pos.Column)) == null)
+                        {
+                            mat[pos.Line - 1, pos.Column] = true;
+                        }
+                    }
+                }
             }
             //Movements for black
             else
@@ -72,6 +99,29 @@ namespace chess
                 if (Board.IsValidPosition(pos) && HasEnemy(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
+                }
+                //Special-move En-Passant
+                pos = new Position(Position.Line, Position.Column - 1); //Left
+                if (match.enPassantPawn != null)
+                {
+                    if (Board.IsValidPosition(pos) && match.enPassantPawn.Color != this.Color && match.enPassantPawn.Position.Line == pos.Line && match.enPassantPawn.Position.Column == pos.Column)
+                    {
+                        if (Board.GetPiece(new Position(pos.Line + 1, pos.Column)) == null)
+                        {
+                            mat[pos.Line + 1, pos.Column] = true;
+                        }
+                    }
+                }
+                pos = new Position(Position.Line, Position.Column + 1); //Right
+                if (match.enPassantPawn != null)
+                {
+                    if (Board.IsValidPosition(pos) && match.enPassantPawn.Color != this.Color && match.enPassantPawn.Position.Line == pos.Line && match.enPassantPawn.Position.Column == pos.Column)
+                    {
+                        if (Board.GetPiece(new Position(pos.Line + 1, pos.Column)) == null)
+                        {
+                            mat[pos.Line + 1, pos.Column] = true;
+                        }
+                    }
                 }
             }
             return mat;
